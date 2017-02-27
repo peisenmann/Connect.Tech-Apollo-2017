@@ -54,7 +54,7 @@ export const withData = graphql(FEED_QUERY, {
     },
     forceFetch: true,
   }),
-  props: ({ error, data: { loading, feed, currentUser, fetchMore } }) => ({
+  props: ({ data: { loading, feed, currentUser, fetchMore } }) => ({
     loading,
     feed,
     currentUser,
