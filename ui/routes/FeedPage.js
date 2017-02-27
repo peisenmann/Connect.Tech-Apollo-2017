@@ -7,7 +7,7 @@ import Loading from '../components/Loading';
 import FEED_QUERY from '../graphql/FeedQuery.graphql';
 import VOTE_MUTATION from '../graphql/Vote.graphql';
 
-class FeedPage extends React.Component {
+export class FeedPage extends React.Component {
   constructor() {
     super();
     this.offset = 0;
@@ -40,8 +40,8 @@ FeedPage.propTypes = {
   vote: React.PropTypes.func.isRequired,
 };
 
-const ITEMS_PER_PAGE = 10;
-const withData = graphql(FEED_QUERY, {
+export const ITEMS_PER_PAGE = 10;
+export const withData = graphql(FEED_QUERY, {
   options: props => ({
     variables: {
       type: (
@@ -54,7 +54,7 @@ const withData = graphql(FEED_QUERY, {
     },
     forceFetch: true,
   }),
-  props: ({ data: { loading, feed, currentUser, fetchMore } }) => ({
+  props: ({ error, data: { loading, feed, currentUser, fetchMore } }) => ({
     loading,
     feed,
     currentUser,
@@ -72,7 +72,7 @@ const withData = graphql(FEED_QUERY, {
   }),
 });
 
-const withMutations = graphql(VOTE_MUTATION, {
+export const withMutations = graphql(VOTE_MUTATION, {
   props: ({ mutate }) => ({
     vote: ({ repoFullName, type }) => mutate({
       variables: { repoFullName, type },

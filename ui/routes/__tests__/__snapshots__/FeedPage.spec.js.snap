@@ -1,0 +1,37 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`FeedPage renders with currentUser 1`] = `
+<div>
+  <div
+    entries={Array []}
+    loggedIn={true}
+    onLoadMore={[Function]}
+    onVote={[Function]}
+  />
+</div>
+`;
+
+exports[`FeedPage renders with minimal props 1`] = `
+<div>
+  <div
+    entries={Array []}
+    loggedIn={false}
+    onLoadMore={[Function]}
+    onVote={[Function]}
+  />
+  <div>
+    Loading...
+  </div>
+</div>
+`;
+
+exports[`FeedPage renders with minimal props 2`] = `
+<div>
+  <div
+    entries={Array []}
+    loggedIn={false}
+    onLoadMore={[Function]}
+    onVote={[Function]}
+  />
+</div>
+`;
