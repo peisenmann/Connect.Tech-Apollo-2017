@@ -1,38 +1,21 @@
+/* eslint-disable import/no-extraneous-dependencies, global-require, react/forbid-prop-types */
+
 import React from 'react';
-import { graphql } from 'react-apollo';
-// eslint-disable-next-line
 import renderer from 'react-test-renderer';
 
-// because we mock graphql, we don't need to import them here
-import { FeedPage } from '../FeedPage';
+import { Page as FeedPage, withData, withMutations } from '../FeedPage';
 import FEED_QUERY from '../../graphql/FeedQuery.graphql';
 import VOTE_MUTATION from '../../graphql/Vote.graphql';
 
-jest.mock('react-apollo', () => ({
-  graphql: jest.fn(() => jest.fn(comp => comp)),
-  withApollo: jest.fn(comp => comp),
-}));
-
+jest.mock('react-apollo');
 
 jest.mock('../../components/Feed', () => {
-  // eslint-disable-next-line
   const { PropTypes } = require('react');
-  // eslint-disable-next-line
-  const el = (props) => <div {...props} />;
-  // eslint-disable-next-line
+
+  const el = props => <div {...props} />;
   el.propTypes = { entries: PropTypes.array };
   return el;
 });
-
-const withData = {
-  DOCUMENT: graphql.mock.calls[0][0],
-  options: graphql.mock.calls[0][1],
-};
-
-const withMutations = {
-  DOCUMENT: graphql.mock.calls[1][0],
-  options: graphql.mock.calls[1][1],
-};
 
 describe('withData', () => {
   it('uses the FEED_QUERY as the document', () => {

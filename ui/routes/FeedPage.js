@@ -7,7 +7,7 @@ import Loading from '../components/Loading';
 import FEED_QUERY from '../graphql/FeedQuery.graphql';
 import VOTE_MUTATION from '../graphql/Vote.graphql';
 
-export class FeedPage extends React.Component {
+export class Page extends React.Component {
   constructor() {
     super();
     this.offset = 0;
@@ -30,7 +30,7 @@ export class FeedPage extends React.Component {
   }
 }
 
-FeedPage.propTypes = {
+Page.propTypes = {
   loading: React.PropTypes.bool.isRequired,
   currentUser: React.PropTypes.shape({
     login: React.PropTypes.string.isRequired,
@@ -80,4 +80,4 @@ export const withMutations = graphql(VOTE_MUTATION, {
   }),
 });
 
-export default withMutations(withData(FeedPage));
+export default withMutations(withData(Page));
