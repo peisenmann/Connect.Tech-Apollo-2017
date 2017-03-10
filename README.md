@@ -1,7 +1,4 @@
 # GitHunt React
-
-[![Greenkeeper badge](https://badges.greenkeeper.io/apollographql/GitHunt-React.svg)](https://greenkeeper.io/)
-
 An example of a client-side app built with React and Apollo Client.
 
 See the application running live at [http://www.githunt.com](http://www.githunt.com).
