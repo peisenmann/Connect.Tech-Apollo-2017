@@ -52,7 +52,6 @@ const withData = graphql(FEED_QUERY, {
       offset: 0,
       limit: ITEMS_PER_PAGE,
     },
-    forceFetch: true,
   }),
   props: ({ data: { loading, feed, currentUser, fetchMore } }) => ({
     loading,
