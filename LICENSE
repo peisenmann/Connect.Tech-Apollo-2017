@@ -1,3 +1,5 @@
+Original Code License:
+-------------------------------------------------------------------------------
 The MIT License (MIT)
 
 Copyright (c) 2016 Meteor Development Group
@@ -19,3 +21,23 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
+-------------------------------------------------------------------------------
+
+
+
+All modifications are under the WTFPL as follows:
+-------------------------------------------------------------------------------
+        DO WHAT THE F*CK YOU WANT TO PUBLIC LICENSE 
+                    Version 2, December 2004 
+
+ Copyright (C) 2004 Sam Hocevar <sam@hocevar.net> 
+
+ Everyone is permitted to copy and distribute verbatim or modified 
+ copies of this license document, and changing it is allowed as long 
+ as the name is changed. 
+
+            DO WHAT THE F*CK YOU WANT TO PUBLIC LICENSE 
+   TERMS AND CONDITIONS FOR COPYING, DISTRIBUTION AND MODIFICATION 
+
+  0. You just DO WHAT THE F*CK YOU WANT TO.
+-------------------------------------------------------------------------------

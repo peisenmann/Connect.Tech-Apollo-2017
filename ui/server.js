@@ -12,12 +12,8 @@ import createApolloClient from './helpers/create-apollo-client';
 import { getPersistedQueryNetworkInterface } from './transport';
 import Layout from './routes/Layout';
 
-let PORT = 3000;
-if (process.env.PORT) {
-  PORT = parseInt(process.env.PORT, 10);
-}
-
-const API_HOST = process.env.NODE_ENV !== 'production' ? 'http://localhost:3010' : 'https://api.githunt.com';
+const PORT = process.env.PORT ? parseInt(process.env.PORT, 10) : 3000;
+const API_HOST = /* process.env.NODE_ENV !== 'production' ? 'http://localhost:3010' : */ 'https://api.githunt.com';
 
 const app = new Express();
 
@@ -65,10 +61,10 @@ app.use((req, res) => {
   }).catch((e) => {
     console.error('RENDERING ERROR:', e); // eslint-disable-line no-console
     res.status(500);
-    res.end(`An error occurred. Please submit an issue to [https://github.com/apollographql/GitHunt-React] with the following stack trace:\n\n${e.stack}`);
+    res.end(`An error occurred. Please submit an issue. Stack trace:\n\n${e.stack}`);
   });
 });
 
 app.listen(PORT, () => console.log( // eslint-disable-line no-console
-  `App Server is now running on http://localhost:${PORT}`
+  `App Server is now running on http://localhost:${PORT}`,
 ));

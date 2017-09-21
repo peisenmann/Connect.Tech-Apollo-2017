@@ -8,7 +8,7 @@ module.exports = {
   target: 'node',
   entry: './ui/server.js',
   output: {
-    path: 'build/server',
+    path: `${__dirname}/build/server`,
     filename: 'bundle.js',
     publicPath: '/',
   },
@@ -17,7 +17,7 @@ module.exports = {
     if (/^[a-z0-9-][a-z0-9-./]+$/.test(request)) {
       return callback(null, `commonjs ${request}`);
     }
-    callback();
+    return callback();
   },
   module: {
     loaders: [

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {PropTypes} from 'react';
 import { NavLink } from 'react-router-dom';
 import { withRouter } from 'react-router';
 
@@ -16,10 +16,10 @@ const NavbarLink = ({ title, href, location }) => {
 };
 
 NavbarLink.propTypes = {
-  title: React.PropTypes.string,
-  href: React.PropTypes.string,
-  location: React.PropTypes.shape({
-    pathname: React.PropTypes.string,
+  title: PropTypes.string,
+  href: PropTypes.string,
+  location: PropTypes.shape({
+    pathname: PropTypes.string,
   }),
 };
 

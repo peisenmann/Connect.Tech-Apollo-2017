@@ -43,7 +43,7 @@ class NewEntryPage extends React.Component {
               className="form-control"
               id="exampleInputEmail1"
               name="repoFullName"
-              placeholder="apollostack/GitHunt"
+              placeholder="peisenmann/Connect.Tech-Apollo-2017"
             />
           </div>
 

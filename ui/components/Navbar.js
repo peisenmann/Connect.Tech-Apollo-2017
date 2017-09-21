@@ -1,10 +1,10 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import Profile from './Profile';
+import {Profile} from './Profile';
 import NavbarLink from './NavbarLink';
 
 const Navbar = () =>
-  <nav className="navbar navbar-default">
+  (<nav className="navbar navbar-default">
     <div className="container">
       <div className="navbar-header">
         <Link className="navbar-brand" to="/feed/top">
@@ -19,6 +19,6 @@ const Navbar = () =>
 
       <Profile />
     </div>
-  </nav>;
+  </nav>);
 
 export default Navbar;

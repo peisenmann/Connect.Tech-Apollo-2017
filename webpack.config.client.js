@@ -7,7 +7,7 @@ module.exports = {
   devtool: DEV ? 'cheap-module-source-map' : 'source-map',
   entry: './ui/client.js',
   output: {
-    path: 'build/client',
+    path: `${__dirname}/build/client`,
     filename: 'bundle.js',
     publicPath: '/',
   },
@@ -27,12 +27,12 @@ module.exports = {
       test: /\.(graphql|gql)$/,
       exclude: /node_modules/,
       loader: 'graphql-tag/loader',
-    }]
+    }],
   },
   plugins: [
     new webpack.DefinePlugin({
       'process.env': {
-        'NODE_ENV': JSON.stringify(DEV ? 'development' : 'production'),
+        NODE_ENV: JSON.stringify(DEV ? 'development' : 'production'),
       },
     }),
     DEV && new webpack.optimize.UglifyJsPlugin({
