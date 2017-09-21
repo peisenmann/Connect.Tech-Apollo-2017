@@ -1,4 +1,4 @@
-# Connect.Tech "React and GraphQL with Apollo" by Patrick Eisenmann - Based on: <a href="https://github.com/apollographql/GitHunt-React">GitHunt React</a>
+# Connect.Tech "React and GraphQL with Apollo" by Patrick Eisenmann - Sample code forked from: <a href="https://github.com/apollographql/GitHunt-React">GitHunt React</a>
 
 An example of a client-side app built with React and Apollo Client.
 
