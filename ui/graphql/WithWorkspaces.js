@@ -1,14 +1,15 @@
-/*eslint-disable react/no-set-state */
-import React, {Component, PropTypes} from 'react'
-import {graphql, compose} from 'react-apollo'
+/* eslint-disable react/no-set-state */
+import React, {Component, PropTypes} from 'react';
+import {graphql, compose} from 'react-apollo';
 
-import {WorkAreaGQL, WorkspaceGQL} from '../queries'
-import {deepDiffShouldComponentUpdate} from '../../util/should-component-update'
+import {WorkAreaGQL, WorkspaceGQL} from '../queries';
+import {deepDiffShouldComponentUpdate} from '../../util/should-component-update';
 
-import {Logger, LogManager} from '../../log'
+import {Logger, LogManager} from '../../log';
+
 const logger: Logger = LogManager.getLogger(
-  'ca.graphql.decorators.withWorkspaces'
-)
+  'ca.graphql.decorators.withWorkspaces',
+);
 
 /**
  * These are the defaults of the WorkspacesOptions defined below.
@@ -21,7 +22,7 @@ const defaultOptions = Object.freeze({
   locationFetchPolicy: 'cache-first',
   workspaceFetchPolicy: 'cache-and-network',
   visitIds: [],
-})
+});
 
 /**
  * A document created by gql``
@@ -101,35 +102,35 @@ type WithWorkspacesParam = {
  */
 export function withWorkspaces(arg: WithWorkspacesParam) {
   // Determine if there were options
-  const opts = arg && arg.options
+  const opts = arg && arg.options;
 
   // Extract or setup the default for our two queries
   const locationQuery =
-    (arg && arg.locationQuery) || WorkAreaGQL.queries.FacilityBeds
+    (arg && arg.locationQuery) || WorkAreaGQL.queries.FacilityBeds;
   const workspaceQuery =
     (arg && arg.workspaceQuery) ||
-    WorkspaceGQL.queries.FullWorkspacePlanVisitByVisitIds
+    WorkspaceGQL.queries.FullWorkspacePlanVisitByVisitIds;
 
   // This is the case that either there was no argument at all @withWorkspaces()
   // Or there were options @withWorkspaces({options: objectOrFunction})
   if (!arg || arg.options) {
-    return withWorkspacesHelper
+    return withWorkspacesHelper;
   } else if (typeof arg === 'function') {
     // This is the case where there were no parens on the decorator @withWorkspaces
-    return withWorkspacesHelper(arg)
-  } else {
-    // Something invalid was passed in
-    logger.error(
-      'Invalid arg passed to withWorkspaces',
-      typeof arg,
-      arg,
-      `Expected one of the following shapes:
+    return withWorkspacesHelper(arg);
+  }
+  // Something invalid was passed in
+  logger.error(
+    'Invalid arg passed to withWorkspaces',
+    typeof arg,
+    arg,
+    `Expected one of the following shapes:
     @withWorkspaces
     @withWorkspaces()
     @withWorkspaces({options: {name: 'data', assignedOnly: true}})
-    @withWorkspaces({options: props => {return {name: props.name, locationFetchPolicy: 'cache-only'}}})`
-    )
-  }
+    @withWorkspaces({options: props => {return {name: props.name, locationFetchPolicy: 'cache-only'}}})`,
+  );
+
 
   // A decorator is expected to return a function that consumes a component
   function withWorkspacesHelper(WrappedComponent) {
@@ -142,12 +143,12 @@ export function withWorkspaces(arg: WithWorkspacesParam) {
       // Pull facilities with assigned or not as a variable
       graphql(locationQuery, {
         name: 'facilityBeds',
-        options: props => {
-          const finalOptions = mergeOptions(props, defaultOptions, opts)
+        options: (props) => {
+          const finalOptions = mergeOptions(props, defaultOptions, opts);
           return {
             fetchPolicy: finalOptions.locationFetchPolicy,
             variables: {assignedBedsOnly: finalOptions.assignedOnly},
-          }
+          };
         },
       }),
       // Workspace query
@@ -157,8 +158,8 @@ export function withWorkspaces(arg: WithWorkspacesParam) {
         name: 'workspacePlanVisit',
         // If the query specifically contained an array of visitIds and that array was empty
         // or if none of the beds had visit ids, then do not send this query
-        skip: props => {
-          const finalOptions = mergeOptions(props, opts)
+        skip: (props) => {
+          const finalOptions = mergeOptions(props, opts);
           return (
             // If the user intentionally passed in an array of length 0, don't request anything
             (finalOptions.visitIds && finalOptions.visitIds.length === 0) ||
@@ -166,12 +167,12 @@ export function withWorkspaces(arg: WithWorkspacesParam) {
             !visitIdsFromFacilities(
               props.facilityBeds.facilities,
               finalOptions.conflictingOnly,
-              finalOptions.addConflicting
+              finalOptions.addConflicting,
             ).length
-          )
+          );
         },
-        options: props => {
-          const finalOptions = mergeOptions(props, defaultOptions, opts)
+        options: (props) => {
+          const finalOptions = mergeOptions(props, defaultOptions, opts);
           return {
             fetchPolicy: finalOptions.workspaceFetchPolicy,
             // If the decorator was given visit ids, use those. Otherwise, use the ones we accumulated from the facility
@@ -182,12 +183,12 @@ export function withWorkspaces(arg: WithWorkspacesParam) {
                 : visitIdsFromFacilities(
                   props.facilityBeds.facilities,
                   finalOptions.conflictingOnly,
-                  finalOptions.addConflicting
+                  finalOptions.addConflicting,
                 ),
             },
-          }
+          };
         },
-      })
+      }),
     )
     class WithWorkspaces extends Component {
       static propTypes = {
@@ -201,11 +202,11 @@ export function withWorkspaces(arg: WithWorkspacesParam) {
                   beds: PropTypes.arrayOf(
                     PropTypes.shape({
                       visitId: PropTypes.number,
-                    })
+                    }),
                   ),
-                })
+                }),
               ),
-            })
+            }),
           ),
         }),
         workspacePlanVisit: PropTypes.shape({
@@ -215,11 +216,11 @@ export function withWorkspaces(arg: WithWorkspacesParam) {
                 PropTypes.shape({
                   exchangeName: PropTypes.string,
                   visitId: PropTypes.number,
-                })
+                }),
               ),
               plan: PropTypes.object,
               visit: PropTypes.object,
-            })
+            }),
           ),
         }),
       }
@@ -227,11 +228,11 @@ export function withWorkspaces(arg: WithWorkspacesParam) {
       state = {workspaces: []}
 
       componentWillMount() {
-        this.prepareWorkspaceState(this.props)
+        this.prepareWorkspaceState(this.props);
       }
 
       componentWillReceiveProps(nextProps) {
-        this.prepareWorkspaceState(nextProps)
+        this.prepareWorkspaceState(nextProps);
       }
 
       shouldComponentUpdate(nextProps, nextState) {
@@ -245,14 +246,14 @@ export function withWorkspaces(arg: WithWorkspacesParam) {
             key: 'withWorkspaces',
             ignoreProp: (key, oldValue, newValue) =>
               typeof oldValue === 'function' && typeof newValue === 'function',
-          }
-        )
+          },
+        );
       }
 
       /*
        * Merge the facility data and the server's workspace data together only when it changes
        */
-      prepareWorkspaceState = props => {
+      prepareWorkspaceState = (props) => {
         // If the server data has changed, recalculate the workspace data
         if (
           this.props.facilityBeds !== props.facilityBeds ||
@@ -263,40 +264,40 @@ export function withWorkspaces(arg: WithWorkspacesParam) {
           const workspaces = props.workspacePlanVisit &&
           props.workspacePlanVisit.workspaces
             ? props.workspacePlanVisit.workspaces.slice()
-            : []
+            : [];
           const facilities =
-            (props.facilityBeds && props.facilityBeds.facilities) || []
+            (props.facilityBeds && props.facilityBeds.facilities) || [];
 
           // Organize workspaces by bed exchange name. This ensures that we get one workspace per assigned bed,
           // even if there is not a patient in that bed. Now we can look up workspaces in O(1)
           const workspacesByBedExchangeName: Map = workspaces.reduce(
             (acc: Map, workspace) => {
               // Accumulate all the exchange names that this workspace participates in
-              const exchangeNames: Set = new Set()
+              const exchangeNames: Set = new Set();
               if (workspace.bed.length) {
-                workspace.bed.forEach(bed => {
-                  exchangeNames.add(bed.exchangeName)
-                })
+                workspace.bed.forEach((bed) => {
+                  exchangeNames.add(bed.exchangeName);
+                });
               }
               // Discharged visits may not have a bed
               if (workspace.visit && workspace.visit.homeBedExchangeName) {
-                exchangeNames.add(workspace.visit.homeBedExchangeName)
+                exchangeNames.add(workspace.visit.homeBedExchangeName);
               }
               // Conflicting Visits may need to get bed name from the conflict
               if (workspace.visit && workspace.visit.bedConflict) {
-                exchangeNames.add(workspace.visit.bedConflict.exchangeName)
+                exchangeNames.add(workspace.visit.bedConflict.exchangeName);
               }
-              exchangeNames.forEach(exchangeName => {
+              exchangeNames.forEach((exchangeName) => {
                 const workspacesForExchangeName =
-                  acc.get(exchangeName) || new Set()
-                workspacesForExchangeName.add(workspace)
-                acc.set(exchangeName, workspacesForExchangeName)
-              })
+                  acc.get(exchangeName) || new Set();
+                workspacesForExchangeName.add(workspace);
+                acc.set(exchangeName, workspacesForExchangeName);
+              });
 
-              return acc
+              return acc;
             },
-            new Map()
-          )
+            new Map(),
+          );
 
           // Our goal output is an array of workspaces where every workspace has (some optional):
           // facility, department, bed, visit, plan
@@ -304,41 +305,43 @@ export function withWorkspaces(arg: WithWorkspacesParam) {
           // location tree stuff just once, then merge it into the workspaces below
           // Now, facilities, departments, and beds should be able to === because they will
           // literally be the same references.
-          const coallatedWorkspaces = []
+          const coallatedWorkspaces = [];
           facilities.forEach(facility =>
             facility.departments.forEach(department =>
               department.beds.forEach(bed =>
                 (workspacesByBedExchangeName.get(bed.exchangeName) ||
                   new Set([{}]))
-                  .forEach(workspace => {
+                  .forEach((workspace) => {
                     coallatedWorkspaces.push({
                       ...workspace,
                       facility,
                       department,
                       bed,
-                    })
-                  })
-              )
-            )
-          )
+                    });
+                  }),
+              ),
+            ),
+          );
 
           // Store this value simply on the class. Maybe this should be in state?
-          this.setState({workspaces: coallatedWorkspaces})
+          this.setState({workspaces: coallatedWorkspaces});
         }
-      }
+      };
 
       handleRefetch = () => {
-        const {facilityBeds, workspacePlanVisit} = this.props
-        facilityBeds.refetch()
-        workspacePlanVisit && workspacePlanVisit.refetch()
-      }
+        const {facilityBeds, workspacePlanVisit} = this.props;
+        facilityBeds.refetch();
+        if (workspacePlanVisit) {
+          workspacePlanVisit.refetch();
+        }
+      };
 
       render() {
         // Get the known data props plus any additional props that might have been passed down
-        const {facilityBeds, workspacePlanVisit, ...props} = this.props
+        const {facilityBeds, workspacePlanVisit, ...props} = this.props;
 
         // If a name value was passed in, we need to grab it
-        const finalOptions = mergeOptions(props, defaultOptions, opts)
+        const finalOptions = mergeOptions(props, defaultOptions, opts);
 
         // Create the structure that to pass into the receiving view. We need to use the named prop that the
         // requester provided.
@@ -351,14 +354,13 @@ export function withWorkspaces(arg: WithWorkspacesParam) {
             refetch: this.handleRefetch,
             workspaces: this.state.workspaces,
           },
-        }
+        };
 
-        // return React.createElement(WrappedComponent, {...props, workspaces: workspacePlanVisit || facilityBeds});
-        return <WrappedComponent {...props} {...dataProps} />
+        return <WrappedComponent {...props} {...dataProps} />;
       }
     }
 
-    return WithWorkspaces
+    return WithWorkspaces;
   }
 }
 
@@ -376,7 +378,7 @@ type Facility = {
 function visitIdsFromFacilities(
   facilities: [Facility],
   conflictingOnly: boolean,
-  addConflicting: boolean
+  addConflicting: boolean,
 ) {
   return facilities
     ? [
@@ -388,41 +390,41 @@ function visitIdsFromFacilities(
                 (visitIds, department) =>
                   visitIds.concat(
                     department.beds.reduce((visitIds, bed) => {
-                      let ids
+                      let ids;
                       if (conflictingOnly) {
-                        ids = bed.conflictingVisitIds
+                        ids = bed.conflictingVisitIds;
                       } else if (
                         bed.visitId ||
                         bed.dischargedVisitId ||
                         bed.conflictingVisitIds
                       ) {
-                        ids = []
+                        ids = [];
                         if (bed.visitId) {
-                          ids.push(bed.visitId)
+                          ids.push(bed.visitId);
                         }
                         if (bed.dischargedVisitId) {
-                          ids.push(bed.dischargedVisitId)
+                          ids.push(bed.dischargedVisitId);
                         }
                         if (
                           addConflicting &&
                           bed.conflictingVisitIds.length > 0
                         ) {
-                          bed.conflictingVisitIds.forEach(id => ids.push(id))
+                          bed.conflictingVisitIds.forEach(id => ids.push(id));
                         }
                       }
                       return ids && ids.length
                         ? visitIds.concat(ids)
-                        : visitIds
-                    }, [])
+                        : visitIds;
+                    }, []),
                   ),
-                []
-              )
+                [],
+              ),
             ),
-          []
-        )
+          [],
+        ),
       ),
     ]
-    : []
+    : [];
 }
 
 /**
@@ -434,9 +436,9 @@ function visitIdsFromFacilities(
 function mergeOptions(props, ...optionArgs) {
   return optionArgs.reduce((acc, opt) => {
     if (typeof opt === 'function') {
-      return Object.assign(acc, opt(props))
+      return Object.assign(acc, opt(props));
     } else if (typeof opt === 'object') {
-      return Object.assign(acc, opt)
+      return Object.assign(acc, opt);
     }
-  }, {})
+  }, {});
 }
